@@ -203,7 +203,6 @@ plt.show()
 
 
 def creat_w(train_data,alpha):
-    print('8')
     x=train_data[:,:-1]
     y=train_data[:,-1]
     N=train_data.shape[0]
@@ -219,7 +218,6 @@ def perceptron_dual(train_data,eta,alpha_0,b_0):
     alpha=alpha_0
     b=b_0
     step_num=0
-    print('6')
     while True:
         i=0
         while(i<length):
@@ -236,24 +234,21 @@ def perceptron_dual(train_data,eta,alpha_0,b_0):
                 i+=1
         if(i==length):
             break
-    print('7')
+
     return (alpha,b,step_num)
 
 
 
-print('2')
 
+'''
 data=creat_data(10)
-print('3')
 #eta,w_0,b_0=0.1,np.ones((3,1),dtype=float),1
 #w,b,num=perceptron(data,eta,w_0,b_0)
 alpha,b_2,num_2=perceptron_dual(data,eta=0.1,alpha_0=np.zeros((data.shape[0]*2,1)),b_0=0)
-print('4')
 w_2=creat_w(data,alpha)
-print('5')
 #print("w_1,b_1",w,b)
 print("w_2,b_2",w_2,b_2)
-print('1')
+
 
 fig=plt.figure()
 plt.suptitle('perceptron')
@@ -269,9 +264,30 @@ ax.plot_surface(x,y,z_2,rstride=1,cstride=1,color='c',alpha=0.2)
 ax.legend(loc='best')
 plt.show()
 
+'''
+#学习率与收敛速度
+def test_eta(data,ax,etas,w_0,alpha_0,b_0):
+    num1=[]
+    num2=[]
+    for eta in etas:
+        _,_,num_1=perceptron(data,eta,w_0=w_0,b_0=b_0)
+        _,_,num_2=perceptron_dual(data,eta=0.1,alpha_0=alpha_0,b_0=b_0)
+        num1.append(num_1)
+        num2.append(num_2)
+    ax.plot(etas,np.array(num1),label='origin')
+    ax.plot(etas,np.array(num2),label='dual')
 
+fig=plt.figure()
+fig.suptitle("perceptron")
+ax=fig.add_subplot(1,1,1)
+ax.set_xlabel(r'eta')
 
-
+data=creat_data(10)
+etas=np.linspace(0.01,1,num=25,endpoint=False)
+w_0,b_0,alpha_0=np.ones((3,1)),0,np.zeros((data.shape[0],1))
+test_eta(data,ax,etas,w_0,alpha_0,b_0)
+ax.legend(loc='best',framealpha=0.5)
+plt.show()
 
 
 
